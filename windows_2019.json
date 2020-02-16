@@ -1,96 +1,39 @@
 {
   "builders": [
     {
-      "boot_wait": "0s",
-      "communicator": "winrm",
-      "cpus": 2,
-      "disk_size": "{{user `disk_size`}}",
-      "floppy_files": [
-        "{{user `autounattend`}}",
-        "./scripts/disable-screensaver.ps1",
-        "./scripts/disable-winrm.ps1",
-        "./scripts/enable-winrm.ps1",
-        "./scripts/microsoft-updates.bat",
-        "./scripts/unattend.xml",
-        "./scripts/sysprep.bat",
-        "./scripts/win-updates.ps1"
-      ],
-      "headless": true,
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_url": "{{user `iso_url`}}",
-      "memory": 2048,
-      "shutdown_command": "a:/sysprep.bat",
-      "type": "qemu",
-      "accelerator": "kvm",
-      "output_directory": "windows_2019-qemu",
-      "qemuargs": [
-        [ "-drive", "file=windows_2019-qemu/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1" ],
-        [ "-drive", "file={{ user `virtio_win_iso` }},media=cdrom,index=3" ]
-      ],
-      "vm_name": "WindowsServer2019",
-      "winrm_password": "vagrant",
-      "winrm_timeout": "{{user `winrm_timeout`}}",
-      "winrm_username": "vagrant"
-    },
-    {
-      "boot_wait": "0s",
-      "communicator": "winrm",
-      "configuration_version": "8.0",
-      "cpus": 2,
-      "disk_size": "{{user `disk_size`}}",
-      "enable_secure_boot": true,
-      "enable_virtualization_extensions": true,
-      "floppy_files": [
-        "{{user `autounattend`}}",
-        "./scripts/disable-screensaver.ps1",
-        "./scripts/disable-winrm.ps1",
-        "./scripts/enable-winrm.ps1",
-        "./scripts/microsoft-updates.bat",
-        "./scripts/unattend.xml",
-        "./scripts/sysprep.bat",
-        "./scripts/win-updates.ps1"
-      ],
-      "guest_additions_mode": "disable",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_url": "{{user `iso_url`}}",
-      "memory": 2048,
-      "shutdown_command": "a:/sysprep.bat",
-      "switch_name": "{{user `hyperv_switchname`}}",
-      "type": "hyperv-iso",
-      "vm_name": "WindowsServer2019",
-      "winrm_password": "vagrant",
-      "winrm_timeout": "{{user `winrm_timeout`}}",
-      "winrm_username": "vagrant"
-    },
-    {
       "boot_wait": "2m",
       "communicator": "winrm",
-      "cpus": 2,
+      "cpus": 4,
+      "cores":2,
       "disk_adapter_type": "lsisas1068",
       "disk_size": "{{user `disk_size`}}",
       "disk_type_id": "{{user `disk_type_id`}}",
       "floppy_files": [
         "{{user `autounattend`}}",
+        "./floppy/WindowsPowershell.lnk",
+        "./floppy/PinTo10.exe",
         "./scripts/disable-screensaver.ps1",
         "./scripts/disable-winrm.ps1",
         "./scripts/enable-winrm.ps1",
         "./scripts/microsoft-updates.bat",
         "./scripts/unattend.xml",
         "./scripts/sysprep.bat",
-        "./scripts/win-updates.ps1"
+        "./scripts/docker/disable-windows-defender.ps1",
+        "./scripts/win-updates.ps1",
+        "./scripts/debloat-windows.ps1"
       ],
       "guest_os_type": "windows9srv-64",
       "headless": "{{user `headless`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `iso_url`}}",
-      "memory": 2048,
+      "memory": 4096,
       "shutdown_command": "a:/sysprep.bat",
       "type": "vmware-iso",
+      "output_directory": "{{user `output_directory`}}",
+      "skip_compaction": true,
       "version": 14,
-      "vm_name": "WindowsServer2019",
+      "vm_name": "{{user `vm_name`}}",
       "vmx_data": {
         "RemoteDisplay.vnc.enabled": "false",
         "RemoteDisplay.vnc.port": "5900"
@@ -98,35 +41,6 @@
       "vmx_remove_ethernet_interfaces": true,
       "vnc_port_max": 5980,
       "vnc_port_min": 5900,
-      "winrm_password": "vagrant",
-      "winrm_timeout": "{{user `winrm_timeout`}}",
-      "winrm_username": "vagrant"
-    },
-    {
-      "boot_wait": "2m",
-      "communicator": "winrm",
-      "cpus": 2,
-      "disk_size": "{{user `disk_size`}}",
-      "floppy_files": [
-        "{{user `autounattend`}}",
-        "./scripts/disable-screensaver.ps1",
-        "./scripts/disable-winrm.ps1",
-        "./scripts/enable-winrm.ps1",
-        "./scripts/microsoft-updates.bat",
-        "./scripts/win-updates.ps1",
-        "./scripts/unattend.xml",
-        "./scripts/sysprep.bat"
-      ],
-      "guest_additions_mode": "disable",
-      "guest_os_type": "Windows2016_64",
-      "headless": "{{user `headless`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_url": "{{user `iso_url`}}",
-      "memory": 2048,
-      "shutdown_command": "a:/sysprep.bat",
-      "type": "virtualbox-iso",
-      "vm_name": "WindowsServer2019",
       "winrm_password": "vagrant",
       "winrm_timeout": "{{user `winrm_timeout`}}",
       "winrm_username": "vagrant"
@@ -150,7 +64,13 @@
       "type": "windows-shell"
     },
     {
+      "restart_timeout": "{{user `restart_timeout`}}",
+      "type": "windows-restart",
+      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
+    },
+    {
       "scripts": [
+        "./scripts/docker/disable-windows-defender.ps1",
         "./scripts/debloat-windows.ps1"
       ],
       "type": "powershell"
@@ -166,10 +86,32 @@
         "./scripts/set-winrm-automatic.bat",
         "./scripts/uac-enable.bat",
         "./scripts/compile-dotnet-assemblies.bat",
-        "./scripts/dis-updates.bat",
-        "./scripts/compact.bat"
+        "./scripts/dis-updates.bat"
       ],
       "type": "windows-shell"
+    },
+    {
+      "restart_timeout": "{{user `restart_timeout`}}",
+      "type": "windows-restart",
+      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
+    },
+    {
+      "type":        "file",
+      "source":       "../workspace-setup/install-devtools.ps1",
+      "destination": "C:\\Windows\\Temp\\install-devtools.ps1"
+    },
+    {
+      "inline": [
+        "C:\\Windows\\Temp\\install-devtools.ps1 -JetBrains -LightTools"
+      ],
+      "type": "powershell",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant"
+    },
+    {
+      "restart_timeout": "{{user `restart_timeout`}}",
+      "type": "windows-restart",
+      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
     }
   ],
   "variables": {
@@ -184,7 +126,9 @@
     "manually_download_iso_from": "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019",
     "restart_timeout": "5m",
     "winrm_timeout": "2h",
-    "virtio_win_iso": "~/virtio-win.iso"
+    "virtio_win_iso": "~/virtio-win.iso",
+    "vm_name":"WindowsServer2019",
+    "output_directory":"windows_2019-iso"
   }
 }
 
