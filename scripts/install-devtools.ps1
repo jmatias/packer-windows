@@ -195,6 +195,7 @@ Function Install-LightTools {
     choco install -y --source $ChocolateyUrl --no-progress make
     choco install -y --source $ChocolateyUrl --no-progress nuget.commandline
     choco install -y --source $ChocolateyUrl --no-progress vscode
+    choco install -y --source $ChocolateyUrl --no-progress golang
     Update-SessionEnvironment
     choco install -y --source $ChocolateyUrl --no-progress git --params "/GitOnlyOnPath  /NoGuiHereIntegration"
     Reboot-IfRequired
