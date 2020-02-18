@@ -82,22 +82,8 @@
                 <AcceptEula>true</AcceptEula>
                 <FullName>Vagrant</FullName>
                 <Organization>Vagrant</Organization>
-
-                <!--
-                    NOTE: If you are re-configuring this for use of a retail key
-                    and using a retail ISO, you need to adjust the <ProductKey> block
-                    below to look like this:
-
-                    <ProductKey>
-                        <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
-                        <WillShowUI>Never</WillShowUI>
-                    </ProductKey>
-
-                    Notice the addition of the `<Key>` element.
-                -->
-
-                <!-- Product Key from https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise -->
-                <ProductKey>2FMYP-QCY43-QR9VK-WTVCK
+                <ProductKey>
+                    <Key>Enter-Key</Key>
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
             </UserData>
@@ -112,7 +98,7 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows 10 Enterprise Evaluation</Value>
+                            <Value>Windows 10 Pro</Value>
                         </MetaData>
                     </InstallFrom>
                 </OSImage>
@@ -251,8 +237,8 @@
                     <Description>Enable AutoLogon</Description>
                 </SynchronousCommand>
                 <!-- WITHOUT WINDOWS UPDATES -->
-                <!--
-                <SynchronousCommand wcm:action="add">
+
+                <!-- <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\enable-winrm.ps1</CommandLine>
                     <Description>Enable WinRM</Description>
                     <Order>99</Order>
@@ -260,7 +246,6 @@
 
                 <!-- END WITHOUT WINDOWS UPDATES -->
                 <!-- WITH WINDOWS UPDATES -->
-
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\pswindowsupdates.ps1</CommandLine>
                     <Order>97</Order>

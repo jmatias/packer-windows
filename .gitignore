@@ -19,4 +19,5 @@ tmp
 /issues/
 *.iso
 path-to.vmx
-windows_2019-iso
+windows-10-ent
+windows-10-pro

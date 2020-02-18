@@ -97,7 +97,7 @@
     },
     {
       "type":        "file",
-      "source":       "../workspace-setup/install-devtools.ps1",
+      "source":       "./scripts/install-devtools.ps1",
       "destination": "C:\\Windows\\Temp\\install-devtools.ps1"
     },
     {

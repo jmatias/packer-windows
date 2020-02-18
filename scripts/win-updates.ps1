@@ -6,6 +6,9 @@ param($global:RestartRequired=0,
 
 $Logfile = "C:\Windows\Temp\win-updates.log"
 
+
+Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Install
+
 function LogWrite {
    Param ([string]$logstring)
    $now = Get-Date -format s
