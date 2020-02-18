@@ -6,14 +6,41 @@ param($global:RestartRequired=0,
 
 $Logfile = "C:\Windows\Temp\win-updates.log"
 
-
-Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Install
-
 function LogWrite {
    Param ([string]$logstring)
    $now = Get-Date -format s
    Add-Content $Logfile -value "$now $logstring"
    Write-Output $logstring
+}
+
+
+function Reboot-IfRequired {
+
+    $RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+    $RegistryEntry = "InstallDevTools"
+
+    if ($(Test-PendingReboot).IsRebootPending) {
+        "***Reboot is needed.***"
+
+        $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
+        if (-not $prop) {
+            LogWrite "Restart Registry Entry Does Not Exist - Creating It"
+            Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File $($script:ScriptPath) $params"
+
+        }
+        else {
+            LogWrite "Restart Registry Entry Exists Already"
+        }
+        Restart-Computer
+    }
+    else {
+        "No reboot is required."
+        $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
+        if ($prop) {
+            LogWrite "Restart Registry Entry Exists - Removing It"
+            Remove-ItemProperty -Path $RegistryKey -Name $RegistryEntry -ErrorAction SilentlyContinue
+        }
+    }
 }
 
 function Check-ContinueRestartOrEnd() {
@@ -221,6 +248,13 @@ $script:UpdateSearcher = $script:UpdateSession.CreateUpdateSearcher()
 $script:SearchResult = New-Object -ComObject 'Microsoft.Update.UpdateColl'
 $script:Cycles = 0
 $script:CycleUpdateCount = 0
+
+A:\\install-devtools.ps1 -PowershellPackages
+Reboot-IfRequired
+
+Import-Module PSWindowsUpdate
+Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Install
+Reboot-IfRequired
 
 if ($BeginWithRestart) {
   $global:RestartRequired = 1

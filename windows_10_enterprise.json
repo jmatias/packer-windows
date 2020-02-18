@@ -4,7 +4,7 @@
       "boot_command": "",
       "boot_wait": "6m",
       "communicator": "winrm",
-      "cpus": 4,
+      "cpus": 8,
       "cores": 2,
       "disk_adapter_type": "lsisas1068",
       "disk_size": "{{user `disk_size`}}",
@@ -28,7 +28,7 @@
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `iso_url`}}",
-      "memory": 8192,
+      "memory": 16384,
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "type": "vmware-iso",
       "version": 14,
@@ -72,15 +72,6 @@
         "./scripts/enable-rdp.bat"
       ],
       "type": "windows-shell"
-    },
-
-    {
-      "inline": [
-        "Import-Module PSWindowsUpdate; Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Install"
-      ],
-      "type": "powershell",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant"
     },
 
     {
@@ -163,7 +154,6 @@
       ],
       "type": "powershell"
     },
-
     {
       "execute_command": "{{ .Vars }} cmd /c \"{{ .Path }}\"",
       "remote_path": "/tmp/script.bat",

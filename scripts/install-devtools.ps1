@@ -15,6 +15,7 @@ param(
 )
 
 $params = $PSBoundParameters
+$ChocolateyUrl = $env:ChocolateyUrl ?? "https://chocolatey.org/api/v2/"
 
 $iisFeatures = @('IIS-WebServerRole', 'IIS-WebServer', 'IIS-CommonHttpFeatures', 'IIS-HttpErrors',
     'IIS-HttpRedirect', 'IIS-ApplicationDevelopment', 'IIS-WebServerManagementTools', 'IIS-ManagementConsole',
@@ -28,7 +29,6 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     Start-Process powershell -Verb runAs -ArgumentList $arguments
     Break
 }
-
 
 
 Function Main {
@@ -81,11 +81,6 @@ Function Main {
         if ($Virtualization -or $All) { Uninstall-Virtualization }
         if ($IIS -or $All) { Uninstall-IIS }
     }
-
-    if ($(Test-PendingReboot).IsRebootPending) {
-        "***Reboot is needed.***"
-    }
-
 }
 Function Install-PowershellPackages {
 
@@ -111,7 +106,7 @@ Function Install-PowershellPackages {
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force
     Update-SessionEnvironment
 
-    choco install -y powershell-preview --install-arguments='"ENABLE_PSREMOTING=1"' --packageparameters '"/CleanUpPath"'
+    choco install -y --source $ChocolateyUrl --no-progress powershell-preview --install-arguments='"ENABLE_PSREMOTING=1"' --packageparameters '"/CleanUpPath"'
     Update-SessionEnvironment
 
 }
@@ -119,7 +114,7 @@ Function Install-PowershellPackages {
 function Install-VsBuildTools {
 
     Reboot-IfRequired
-    choco install -y visualstudio2019buildtools -d --package-parameters "--add Microsoft.VisualStudio.Workload.WebBuildTools --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive --locale en-US"
+    choco install -y --source $ChocolateyUrl --no-progress visualstudio2019buildtools -d --package-parameters "--add Microsoft.VisualStudio.Workload.WebBuildTools --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive --locale en-US"
     Reboot-IfRequired
 }
 
@@ -128,9 +123,9 @@ function Uninstall-VsBuildTools {
 }
 
 Function Install-SqlServer {
-    choco install -y sql-server-2019 --params="'INSTANCENAME=MSSQLSERVER /ACTION=INSTALL'"
+    choco install -y --source $ChocolateyUrl --no-progress sql-server-2019 --params="'INSTANCENAME=MSSQLSERVER /ACTION=INSTALL'"
     Reboot-IfRequired
-    choco install -y sql-server-management-studio
+    choco install -y --source $ChocolateyUrl --no-progress sql-server-management-studio
     Install-Module SqlServer -Confirm:$false -Force
 
 }
@@ -147,7 +142,7 @@ Function Install-GitAliases {
 
 
 Function Install-VisualStudio {
-    choco install -y visualstudio2019enterprise --package-parameters "--add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional --passive --locale en-US"
+    choco install -y --source $ChocolateyUrl --no-progress visualstudio2019enterprise --package-parameters "--add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional --passive --locale en-US"
 }
 
 Function Uninstall-VisualStudio {
@@ -155,7 +150,7 @@ Function Uninstall-VisualStudio {
 }
 
 Function Install-VisualStudioLegacy {
-    choco install -y visualstudio2012premium -packageParameters "/Features:'VC_MFC_Libraries'"
+    choco install -y --source $ChocolateyUrl --no-progress visualstudio2012premium -packageParameters "/Features:'VC_MFC_Libraries'"
     Reboot-IfRequired
 }
 
@@ -167,8 +162,8 @@ Function UnInstall-VisualStudioLegacy {
 
 
 Function Install-Jetbrains {
-    choco install -y jetbrains-rider
-    choco install -y intellijidea-ultimate
+    choco install -y --source $ChocolateyUrl --no-progress jetbrains-rider
+    choco install -y --source $ChocolateyUrl --no-progress intellijidea-ultimate
 }
 
 Function Uninstall-Jetbrains {
@@ -177,9 +172,9 @@ Function Uninstall-Jetbrains {
 }
 
 function Install-Virtualization {
-    choco install -y terraform
-    choco install -y vagrant
-    choco install -y packer
+    choco install -y --source $ChocolateyUrl --no-progress terraform
+    choco install -y --source $ChocolateyUrl --no-progress vagrant
+    choco install -y --source $ChocolateyUrl --no-progress packer
 
 }
 function Uninstall-Virtualization {
@@ -190,28 +185,35 @@ function Uninstall-Virtualization {
 
 Function Install-LightTools {
 
-    choco install -y powershell-preview --install-arguments='"ENABLE_PSREMOTING=1"' --packageparameters '"/CleanUpPath"'
     Reboot-IfRequired
     Update-SessionEnvironment
-    choco install -y nodejs
-    choco install -y unxUtils
-    choco install -y make
-    choco install -y nuget.commandline
-    choco install -y vscode
+    choco install -y --source $ChocolateyUrl --no-progress nodejs
+    choco install -y --source $ChocolateyUrl --no-progress unxUtils
+    choco install -y --source $ChocolateyUrl --no-progress make
+    choco install -y --source $ChocolateyUrl --no-progress nuget.commandline
+    choco install -y --source $ChocolateyUrl --no-progress vscode
     Update-SessionEnvironment
-    choco install -y git --params "/GitOnlyOnPath  /NoGuiHereIntegration"
+    choco install -y --source $ChocolateyUrl --no-progress git --params "/GitOnlyOnPath  /NoGuiHereIntegration"
     Reboot-IfRequired
     Update-SessionEnvironment
-    choco install -y firefox
-    choco install -y procexp
-    choco install -y cyberduck
+    choco install -y --source $ChocolateyUrl --no-progress firefox
+    choco install -y --source $ChocolateyUrl --no-progress procexp
+    choco install -y --source $ChocolateyUrl --no-progress procmon
+    choco install -y --source $ChocolateyUrl --no-progress cyberduck
     Update-SessionEnvironment
-    choco install -y starship
-    choco install -y firacode
+    choco install -y --source $ChocolateyUrl --no-progress starship
+    choco install -y --source $ChocolateyUrl --no-progress firacode
     Update-SessionEnvironment
     Reboot-IfRequired
 
-    choco install -y microsoft-windows-terminal
+
+    Invoke-WebRequest https://download.microsoft.com/download/B/E/1/BE1F235A-836D-42AC-9BC1-8F04C9DA7E9D/vc_uwpdesktop.140.exe -o "$env:TEMP/vc_uwpdesktop.140.exe"
+    &(join-path $env:TEMP vc_uwpdesktop.140.exe) /install  /quiet /norestart /log "$env:TEMP/uwpdesktop.log"
+    type "$env:TEMP/uwpdesktop.log"
+    Reboot-IfRequired
+
+    choco install -y --source $ChocolateyUrl --no-progress microsoft-windows-terminal
+
     Update-SessionEnvironment
 
     $path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
@@ -257,9 +259,6 @@ Function Uninstall-LightTools {
 
 }
 
-
-
-
 Function Install-IIS {
 
     $featureStates = Get-IISFeatureStates
@@ -271,7 +270,6 @@ Function Install-IIS {
     $features | ForEach-Object { dism.exe -online -enable-feature -featurename:$($_.Name) -all }
 
     Install-Module IISAdministration -Confirm:$false -Force
-
 }
 
 
@@ -307,7 +305,7 @@ Function Get-IISFeatureStates {
 
 Function Install-Python {
     "Installing Python 3"
-    choco install -y python3
+    choco install -y --source $ChocolateyUrl --no-progress python3
     Update-SessionEnvironment
     python -m pip install --upgrade pip
 }
