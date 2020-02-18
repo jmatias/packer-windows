@@ -14,8 +14,10 @@ param(
     [switch] $NonInteractive
 )
 
-$params = $PSBoundParameters
-$ChocolateyUrl = $env:ChocolateyUrl ?? "https://chocolatey.org/api/v2/"
+$script:params = $PSBoundParameters.Keys | %{"-$_" -join ' '}
+
+$ChocolateyUrl = $env:ChocolateyUrl
+if(!$ChocolateyUrl) {  $ChocolateyUrl = "https://chocolatey.org/api/v2/"}
 
 $iisFeatures = @('IIS-WebServerRole', 'IIS-WebServer', 'IIS-CommonHttpFeatures', 'IIS-HttpErrors',
     'IIS-HttpRedirect', 'IIS-ApplicationDevelopment', 'IIS-WebServerManagementTools', 'IIS-ManagementConsole',
@@ -25,8 +27,8 @@ $script:ScriptName = $MyInvocation.MyCommand.ToString()
 $script:ScriptPath = $MyInvocation.MyCommand.Path
 
 If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    $arguments = "& '" + $myinvocation.mycommand.definition + "'"
-    Start-Process powershell -Verb runAs -ArgumentList $arguments
+    $arguments = "&'" + $myinvocation.mycommand.definition + "' $($script:params)"
+    Start-Process powershell.exe -Verb runAs -ArgumentList $arguments
     Break
 }
 
@@ -45,6 +47,7 @@ Function Main {
 
 
     Install-PowershellPackages
+    Reboot-IfRequired
 
     if (  $PSVersionTable.PSVersion -gt "6.0") {
         Import-WinModule PendingReboot
@@ -209,7 +212,7 @@ Function Install-LightTools {
 
     Invoke-WebRequest https://download.microsoft.com/download/B/E/1/BE1F235A-836D-42AC-9BC1-8F04C9DA7E9D/vc_uwpdesktop.140.exe -o "$env:TEMP/vc_uwpdesktop.140.exe"
     &(join-path $env:TEMP vc_uwpdesktop.140.exe) /install  /quiet /norestart /log "$env:TEMP/uwpdesktop.log"
-    type "$env:TEMP/uwpdesktop.log"
+    Get-Content "$env:TEMP/uwpdesktop.log"
     Reboot-IfRequired
 
     choco install -y --source $ChocolateyUrl --no-progress microsoft-windows-terminal
@@ -232,7 +235,6 @@ Function Install-LightTools {
 
 Function Uninstall-LightTools {
 
-    choco uninstall -y powershell-preview
     choco uninstall -y nodejs
     choco uninstall -y unxUtils
     choco uninstall -y make
@@ -263,9 +265,8 @@ Function Install-IIS {
 
     $featureStates = Get-IISFeatureStates
 
-    $featureStates | Where-Object { $_.State -ne "Enabled" } | Where-Object {
-        $iisFeatures.Contains($_.Name)
-    }
+    $featureStates = $featureStates | Where-Object { $_.State -ne "Enabled" }
+    $featureStates = $featureStates | Where-Object { $iisFeatures.Contains($_.Name) }
 
     $features | ForEach-Object { dism.exe -online -enable-feature -featurename:$($_.Name) -all }
 
@@ -278,10 +279,12 @@ Function Uninstall-IIS {
 
     $featureStates = Get-IISFeatureStates
 
-    $featureStates | Where-Object { $_.State -ne "Disable" } | Where-Object { $iisFeatures.Contains($_.Name) }
+    $featureStates = $featureStates | Where-Object { $_.State -ne "Disabled" }
+    $featureStates = $featureStates | Where-Object { $iisFeatures.Contains($_.Name) }
 
-    $features | ForEach-Object { dism.exe -online -disable-feature -featurename:$($_.Name) }
+    $featureStates | ForEach-Object { dism.exe -online -disable-feature -featurename:$($_.Name) }
     Uninstall-Module IISAdministration -Confirm:$false -Force -ErrorAction SilentlyContinue
+
 }
 
 Function Get-IISFeatureStates {
@@ -331,16 +334,19 @@ function Reboot-IfRequired {
     $RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
     $RegistryEntry = "InstallDevTools"
 
+
+
     if ($(Test-PendingReboot).IsRebootPending) {
         "***Reboot is needed.***"
 
         $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
         if (-not $prop) {
             LogWrite "Restart Registry Entry Does Not Exist - Creating It"
-            Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File $($script:ScriptPath) $params"
+            Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "powershell.exe -File $($script:ScriptPath) $script:params"
 
         }
         else {
+            Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "powershell.exe -File $($script:ScriptPath) $script:params"
             LogWrite "Restart Registry Entry Exists Already"
         }
         Restart-Computer
