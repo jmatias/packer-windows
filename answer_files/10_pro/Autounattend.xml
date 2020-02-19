@@ -249,6 +249,12 @@
                 <!-- WITH WINDOWS UPDATES -->
 
                 <SynchronousCommand wcm:action="add">
+                    <CommandLine>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\install-vclibs.ps1</CommandLine>
+                    <Order>97</Order>
+                    <Description>Enable Microsoft Updates</Description>
+                </SynchronousCommand>
+
+                <SynchronousCommand wcm:action="add">
                     <CommandLine>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\pswindowsupdates.ps1</CommandLine>
                     <Order>98</Order>
                     <Description>Enable Microsoft Updates</Description>
