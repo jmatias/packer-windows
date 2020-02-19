@@ -83,7 +83,8 @@
                 <FullName>Vagrant</FullName>
                 <Organization>Vagrant</Organization>
                 <ProductKey>
-                    <Key>Enter-Key</Key>
+                    <!-- Generic Evaluation Key for Windows 10 Pro -->
+                    <Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
             </UserData>

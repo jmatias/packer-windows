@@ -109,7 +109,7 @@ Function Install-PowershellPackages {
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force
     Update-SessionEnvironment
 
-    choco install -y --source $ChocolateyUrl --no-progress powershell-preview --install-arguments='"ENABLE_PSREMOTING=1"' --packageparameters '"/CleanUpPath"'
+    choco install -y --source $ChocolateyUrl --no-progress powershell-preview --packageparameters '"/CleanUpPath"'
     Update-SessionEnvironment
 
 }
@@ -162,8 +162,6 @@ Function UnInstall-VisualStudioLegacy {
     Reboot-IfRequired
 }
 
-
-
 Function Install-Jetbrains {
     choco install -y --source $ChocolateyUrl --no-progress jetbrains-rider
     choco install -y --source $ChocolateyUrl --no-progress intellijidea-ultimate
@@ -188,6 +186,7 @@ function Uninstall-Virtualization {
 
 Function Install-LightTools {
 
+
     Reboot-IfRequired
     Update-SessionEnvironment
     choco install -y --source $ChocolateyUrl --no-progress nodejs
@@ -211,12 +210,12 @@ Function Install-LightTools {
     Reboot-IfRequired
 
 
-    Invoke-WebRequest https://download.microsoft.com/download/B/E/1/BE1F235A-836D-42AC-9BC1-8F04C9DA7E9D/vc_uwpdesktop.140.exe -o "$env:TEMP/vc_uwpdesktop.140.exe"
-    &(join-path $env:TEMP vc_uwpdesktop.140.exe) /install  /quiet /norestart /log "$env:TEMP/uwpdesktop.log"
-    Get-Content "$env:TEMP/uwpdesktop.log"
-    Reboot-IfRequired
+    # Invoke-WebRequest https://download.microsoft.com/download/B/E/1/BE1F235A-836D-42AC-9BC1-8F04C9DA7E9D/vc_uwpdesktop.140.exe -o "C:\Windows\Temp\vc_uwpdesktop.140.exe"
+    # C:\Windows\Temp\vc_uwpdesktop.140.exe /install  /quiet /norestart /log "C:\Windows\Temp\uwpdesktop.log"
+    # Get-Content "C:\Windows\Temp\uwpdesktop.log"
+    # Reboot-IfRequired
 
-    choco install -y --source $ChocolateyUrl --no-progress microsoft-windows-terminal
+    # choco install -y --source $ChocolateyUrl --no-progress microsoft-windows-terminal
 
     Update-SessionEnvironment
 
@@ -332,34 +331,34 @@ function LogWrite {
 
 function Reboot-IfRequired {
 
-    $RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-    $RegistryEntry = "InstallDevTools"
+    # $RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+    # $RegistryEntry = "InstallDevTools"
 
 
 
-    if ($(Test-PendingReboot).IsRebootPending) {
-        "***Reboot is needed.***"
+    # if ($(Test-PendingReboot).IsRebootPending) {
+    #     "***Reboot is needed.***"
 
-        $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
-        if (-not $prop) {
-            LogWrite "Restart Registry Entry Does Not Exist - Creating It"
-            Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "powershell.exe -File $($script:ScriptPath) $script:params"
+    #     $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
+    #     if (-not $prop) {
+    #         LogWrite "Restart Registry Entry Does Not Exist - Creating It"
+    #         Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "powershell.exe -File $($script:ScriptPath) $script:params"
 
-        }
-        else {
-            Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "powershell.exe -File $($script:ScriptPath) $script:params"
-            LogWrite "Restart Registry Entry Exists Already"
-        }
-        Restart-Computer
-    }
-    else {
-        "No reboot is required."
-        $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
-        if ($prop) {
-            LogWrite "Restart Registry Entry Exists - Removing It"
-            Remove-ItemProperty -Path $RegistryKey -Name $RegistryEntry -ErrorAction SilentlyContinue
-        }
-    }
+    #     }
+    #     else {
+    #         Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "powershell.exe -File $($script:ScriptPath) $script:params"
+    #         LogWrite "Restart Registry Entry Exists Already"
+    #     }
+    #     Restart-Computer -Force
+    # }
+    # else {
+    #     "No reboot is required."
+    #     $prop = (Get-ItemProperty $RegistryKey).$RegistryEntry
+    #     if ($prop) {
+    #         LogWrite "Restart Registry Entry Exists - Removing It"
+    #         Remove-ItemProperty -Path $RegistryKey -Name $RegistryEntry -ErrorAction SilentlyContinue
+    #     }
+    # }
 }
 
 Main
