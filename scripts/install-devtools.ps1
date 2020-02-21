@@ -59,6 +59,7 @@ Function Main {
     }
 
 
+
     if ( -not $Uninstall ) {
 
         if ($LightTools -or $All) { Install-LightTools }
@@ -117,7 +118,7 @@ Function Install-PowershellPackages {
 function Install-VsBuildTools {
 
     Reboot-IfRequired
-    choco install -y --source $ChocolateyUrl --no-progress visualstudio2019buildtools -d --package-parameters "--add Microsoft.VisualStudio.Workload.WebBuildTools --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive --locale en-US"
+    choco install -y --source $ChocolateyUrl --no-progress visualstudio2019buildtools -d --package-parameters "--add Microsoft.VisualStudio.Workload.WebBuildTools --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Workload.OfficeBuildTools --passive --locale en-US"
     Reboot-IfRequired
 }
 
@@ -128,14 +129,14 @@ function Uninstall-VsBuildTools {
 Function Install-SqlServer {
     choco install -y --source $ChocolateyUrl --no-progress sql-server-2019 --params="'INSTANCENAME=MSSQLSERVER /ACTION=INSTALL'"
     Reboot-IfRequired
-    choco install -y --source $ChocolateyUrl --no-progress sql-server-management-studio
+    # choco install -y --source $ChocolateyUrl --no-progress sql-server-management-studio
     Install-Module SqlServer -Confirm:$false -Force
 
 }
 
 Function Uninstall-SqlServer {
     choco uninstall -y sql-server-2019
-    choco uninstall -y sql-server-management-studio
+    # choco uninstall -y sql-server-management-studio
 }
 
 
@@ -145,7 +146,7 @@ Function Install-GitAliases {
 
 
 Function Install-VisualStudio {
-    choco install -y --source $ChocolateyUrl --no-progress visualstudio2019enterprise --package-parameters "--add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional --passive --locale en-US"
+    choco install -y --source $ChocolateyUrl --no-progress visualstudio2019enterprise --package-parameters "--nocache --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop --add Microsoft.VisualStudio.Workload.Office --passive --locale en-US"
 }
 
 Function Uninstall-VisualStudio {
@@ -194,7 +195,6 @@ Function Install-LightTools {
     choco install -y --source $ChocolateyUrl --no-progress make
     choco install -y --source $ChocolateyUrl --no-progress nuget.commandline
     choco install -y --source $ChocolateyUrl --no-progress vscode
-    choco install -y --source $ChocolateyUrl --no-progress golang
     Update-SessionEnvironment
     choco install -y --source $ChocolateyUrl --no-progress git --params "/GitOnlyOnPath  /NoGuiHereIntegration"
     Reboot-IfRequired
@@ -202,10 +202,10 @@ Function Install-LightTools {
     choco install -y --source $ChocolateyUrl --no-progress firefox
     choco install -y --source $ChocolateyUrl --no-progress procexp
     choco install -y --source $ChocolateyUrl --no-progress procmon
-    choco install -y --source $ChocolateyUrl --no-progress cyberduck
     Update-SessionEnvironment
     choco install -y --source $ChocolateyUrl --no-progress starship
     choco install -y --source $ChocolateyUrl --no-progress firacode
+    choco install -y --source $ChocolateyUrl --no-progress choco-cleaner
     Update-SessionEnvironment
     Reboot-IfRequired
 
@@ -229,6 +229,7 @@ Function Install-LightTools {
         Add-Content -Path $profile -Value "`n`nInvoke-Expression (&starship init powershell)"
     }
 
+    Install-Python
     Reboot-IfRequired
 
 }
@@ -258,6 +259,9 @@ Function Uninstall-LightTools {
         $profileContent -replace "$match", ""
     }
     $profileContent | Set-Content -Path $profile
+
+    Update-SessionEnvironment
+    Uninstall-Python
 
 }
 

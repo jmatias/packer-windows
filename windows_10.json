@@ -22,7 +22,10 @@
         "./scripts/pswindowsupdates.ps1",
         "./scripts/docker/disable-windows-defender.ps1",
         "./scripts/install-devtools.ps1",
-        "./scripts/install-vclibs.ps1"
+        "./scripts/install-vclibs.ps1",
+        "./scripts/choco-cleaner.ps1",
+        "./scripts/debloat/scripts/remove-default-apps.ps1",
+        "./scripts/debloat/scripts/remove-onedrive.ps1"
       ],
       "guest_os_type": "Windows9-64",
       "headless": "{{user `headless`}}",
@@ -44,7 +47,7 @@
       "winrm_password": "vagrant",
       "winrm_timeout": "{{user `winrm_timeout`}}",
       "winrm_username": "vagrant",
-      "output_directory" : "windows-10-{{user `windows10_edition`}}-vmware"
+      "output_directory": "windows-10-{{user `windows10_edition`}}-vmware"
     },
     {
       "boot_command": "",
@@ -65,7 +68,10 @@
         "./scripts/pswindowsupdates.ps1",
         "./scripts/docker/disable-windows-defender.ps1",
         "./scripts/install-devtools.ps1",
-        "./scripts/install-vclibs.ps1"
+        "./scripts/install-vclibs.ps1",
+        "./scripts/choco-cleaner.ps1",
+        "./scripts/debloat/scripts/remove-default-apps.ps1",
+        "./scripts/debloat/scripts/remove-onedrive.ps1"
       ],
       "guest_additions_mode": "disable",
       "guest_os_type": "Windows10_64",
@@ -80,13 +86,13 @@
       "winrm_password": "vagrant",
       "winrm_timeout": "{{user `winrm_timeout`}}",
       "winrm_username": "vagrant",
-      "output_directory" : "windows-10-{{user `windows10_edition`}}-virtualbox"
+      "output_directory": "windows-10-{{user `windows10_edition`}}-virtualbox"
     }
   ],
   "post-processors": [
     {
       "keep_input_artifact": false,
-      "output": "windows_10_{{user `windows10_edition`}}_{{.Provider}}.box",
+      "output": "windows_10_{{user `windows10_edition`}}_{{.Provider}}_{{user `version`}}.box",
       "type": "vagrant",
       "vagrantfile_template": "vagrantfile-windows_10.template"
     }
@@ -99,7 +105,6 @@
       ],
       "type": "powershell"
     },
-
     {
       "execute_command": "{{ .Vars }} cmd /c \"{{ .Path }}\"",
       "remote_path": "/tmp/script.bat",
@@ -112,7 +117,6 @@
     {
       "type": "windows-restart"
     },
-
     {
       "inline": [
         "a:\\disable-windows-defender.ps1",
@@ -123,14 +127,13 @@
       "elevated_password": "vagrant"
     },
     {
-      "type": "windows-restart"
+      "type": "windows-restart",
+      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
     },
-
-
     {
       "inline": [
         "a:\\disable-windows-defender.ps1",
-        "a:\\install-devtools.ps1 -LightTools"
+        "a:\\install-devtools.ps1 -VisualStudio"
       ],
       "type": "powershell",
       "elevated_user": "vagrant",
@@ -138,23 +141,9 @@
     },
     {
       "restart_timeout": "{{user `restart_timeout`}}",
-      "type": "windows-restart"
+      "type": "windows-restart",
+      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
     },
-
-    {
-      "inline": [
-        "a:\\disable-windows-defender.ps1",
-        "a:\\install-devtools.ps1 -VsBuildTools"
-      ],
-      "type": "powershell",
-      "elevated_user": "vagrant",
-      "elevated_password": "vagrant"
-    },
-    {
-      "restart_timeout": "{{user `restart_timeout`}}",
-      "type": "windows-restart"
-    },
-
     {
       "inline": [
         "a:\\disable-windows-defender.ps1",
@@ -169,7 +158,6 @@
       "type": "windows-restart",
       "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
     },
-
     {
       "inline": [
         "a:\\disable-windows-defender.ps1",
@@ -184,10 +172,10 @@
       "type": "windows-restart",
       "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
     },
-
     {
       "scripts": [
-        "./scripts/docker/disable-windows-defender.ps1"
+        "./scripts/docker/disable-windows-defender.ps1",
+        "./scripts/choco-cleaner.ps1"
       ],
       "type": "powershell"
     },
@@ -215,9 +203,10 @@
     "restart_timeout": "5m",
     "vhv_enable": "false",
     "winrm_timeout": "6h",
-    "vm_name":"windows-10-{{user `windows10_edition`}}",
+    "vm_name": "windows-10-{{user `windows10_edition`}}",
     "virtio_win_iso": "~/virtio-win.iso",
-    "windows10_edition":"pro"
+    "windows10_edition": "pro",
+    "version": "0.1.1",
+    "cloud_token": "token"
   }
 }
-
