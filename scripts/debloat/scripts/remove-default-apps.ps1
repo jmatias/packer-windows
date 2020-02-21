@@ -2,7 +2,7 @@
 # This script removes unwanted Apps that come with Windows. If you  do not want
 # to remove certain Apps comment out the corresponding lines below.
 
-Import-Module -DisableNameChecking $PSScriptRoot\..\lib\take-own.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\take-own.psm1
 
 echo "Elevating priviledges for this process"
 do {} until (Elevate-Privileges SeTakeOwnershipPrivilege)
@@ -89,3 +89,5 @@ foreach ($app in $apps) {
         where DisplayName -EQ $app |
         Remove-AppxProvisionedPackage -Online
 }
+
+Get-AppxPackage | ?{$_.Name -match "xbox"} | select PackageFullName | %{Remove-AppxPackage -Package $_.PackageFullName}

@@ -20,5 +20,5 @@ tmp
 *.iso
 path-to.vmx
 windows-10-ent
-windows-10-pro
+windows-10-pro-vmware
 .vscode

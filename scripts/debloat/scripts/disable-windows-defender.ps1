@@ -1,7 +1,7 @@
 #   Description:
 # This script disables Windows Defender.
 
-Import-Module -DisableNameChecking $PSScriptRoot\..\lib\force-mkdir.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\force-mkdir.psm1
 
 $tasks = @(
     "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance"

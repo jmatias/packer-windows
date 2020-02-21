@@ -237,23 +237,23 @@
                     <Order>14</Order>
                     <Description>Enable AutoLogon</Description>
                 </SynchronousCommand>
-                <!-- WITHOUT WINDOWS UPDATES -->
 
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\install-vclibs.ps1</CommandLine>
+                    <Order>15</Order>
+                    <Description>Install VCLibs</Description>
+                </SynchronousCommand>
+
+                <!-- WITHOUT WINDOWS UPDATES -->
                 <!-- <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\enable-winrm.ps1</CommandLine>
                     <Description>Enable WinRM</Description>
                     <Order>99</Order>
                 </SynchronousCommand> -->
-
                 <!-- END WITHOUT WINDOWS UPDATES -->
+
+
                 <!-- WITH WINDOWS UPDATES -->
-
-                <SynchronousCommand wcm:action="add">
-                    <CommandLine>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\install-vclibs.ps1</CommandLine>
-                    <Order>97</Order>
-                    <Description>Enable Microsoft Updates</Description>
-                </SynchronousCommand>
-
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\pswindowsupdates.ps1</CommandLine>
                     <Order>98</Order>
@@ -273,8 +273,8 @@
                     <Order>100</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
-
                 <!-- END WITH WINDOWS UPDATES -->
+
             </FirstLogonCommands>
             <ShowWindowsLive>false</ShowWindowsLive>
         </component>

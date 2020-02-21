@@ -3,8 +3,8 @@
 # disable some accessibility features regarding keyboard input.  Additional
 # some UI elements will be changed.
 
-Import-Module -DisableNameChecking $PSScriptRoot\..\lib\force-mkdir.psm1
-Import-Module -DisableNameChecking $PSScriptRoot\..\lib\take-own.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\force-mkdir.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\take-own.psm1
 
 echo "Elevating priviledges for this process"
 do {} until (Elevate-Privileges SeTakeOwnershipPrivilege)

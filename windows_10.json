@@ -25,7 +25,12 @@
         "./scripts/install-vclibs.ps1",
         "./scripts/choco-cleaner.ps1",
         "./scripts/debloat/scripts/remove-default-apps.ps1",
-        "./scripts/debloat/scripts/remove-onedrive.ps1"
+        "./scripts/debloat/scripts/remove-onedrive.ps1",
+        "./scripts/debloat/scripts/fix-privacy-settings.ps1",
+        "./scripts/debloat/scripts/block-telemetry.ps1",
+        "./scripts/debloat/scripts/force-mkdir.psm1",
+        "./scripts/debloat/scripts/take-own.psm1",
+        "./scripts/debloat/scripts/optimize-windows-update.ps1"
       ],
       "guest_os_type": "Windows9-64",
       "headless": "{{user `headless`}}",
@@ -71,7 +76,12 @@
         "./scripts/install-vclibs.ps1",
         "./scripts/choco-cleaner.ps1",
         "./scripts/debloat/scripts/remove-default-apps.ps1",
-        "./scripts/debloat/scripts/remove-onedrive.ps1"
+        "./scripts/debloat/scripts/remove-onedrive.ps1",
+        "./scripts/debloat/scripts/fix-privacy-settings.ps1",
+        "./scripts/debloat/scripts/block-telemetry.ps1",
+        "./scripts/debloat/scripts/force-mkdir.psm1",
+        "./scripts/debloat/scripts/take-own.psm1",
+        "./scripts/debloat/scripts/optimize-windows-update.ps1"
       ],
       "guest_additions_mode": "disable",
       "guest_os_type": "Windows10_64",
@@ -101,9 +111,12 @@
     {
       "scripts": [
         "./scripts/set-powerplan.ps1",
-        "./scripts/docker/disable-windows-defender.ps1"
+        "./scripts/docker/disable-windows-defender.ps1",
+        "./scripts/debloat/scripts/optimize-windows-update.ps1"
       ],
-      "type": "powershell"
+      "type": "powershell",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant"
     },
     {
       "execute_command": "{{ .Vars }} cmd /c \"{{ .Path }}\"",
@@ -120,20 +133,23 @@
     {
       "inline": [
         "a:\\disable-windows-defender.ps1",
-        "a:\\install-devtools.ps1 -LightTools"
+        "a:\\install-devtools.ps1 -PowershellPackages"
       ],
       "type": "powershell",
       "elevated_user": "vagrant",
       "elevated_password": "vagrant"
     },
     {
-      "type": "windows-restart",
-      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
+      "inline": [
+        "pwsh -c a:\\install-devtools.ps1 -LightTools"
+      ],
+      "type": "powershell",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant"
     },
     {
       "inline": [
-        "a:\\disable-windows-defender.ps1",
-        "a:\\install-devtools.ps1 -VisualStudio"
+        "pwsh -c a:\\install-devtools.ps1 -VisualStudio"
       ],
       "type": "powershell",
       "elevated_user": "vagrant",
@@ -146,8 +162,8 @@
     },
     {
       "inline": [
-        "a:\\disable-windows-defender.ps1",
-        "a:\\install-devtools.ps1 -VisualStudioLegacy"
+        "pwsh -c a:\\disable-windows-defender.ps1",
+        "pwsh -c a:\\install-devtools.ps1 -VisualStudioLegacy"
       ],
       "type": "powershell",
       "elevated_user": "vagrant",
@@ -160,8 +176,8 @@
     },
     {
       "inline": [
-        "a:\\disable-windows-defender.ps1",
-        "a:\\install-devtools.ps1 -SqlServer"
+        "pwsh -c a:\\disable-windows-defender.ps1",
+        "pwsh -c a:\\install-devtools.ps1 -SqlServer"
       ],
       "type": "powershell",
       "elevated_user": "vagrant",
@@ -172,12 +188,19 @@
       "type": "windows-restart",
       "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
     },
+
     {
-      "scripts": [
-        "./scripts/docker/disable-windows-defender.ps1",
-        "./scripts/choco-cleaner.ps1"
+      "inline": [
+        "pwsh -c a:\\disable-windows-defender.ps1",
+        "pwsh -c a:\\choco-cleaner.ps1",
+        "pwsh -c a:\\remove-default-apps.ps1",
+        "pwsh -c a:\\remove-onedrive.ps1",
+        "pwsh -c a:\\fix-privacy-settings.ps1",
+        "pwsh -c a:\\block-telemetry.ps1"
       ],
-      "type": "powershell"
+      "type": "powershell",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant"
     },
     {
       "execute_command": "{{ .Vars }} cmd /c \"{{ .Path }}\"",
@@ -206,7 +229,7 @@
     "vm_name": "windows-10-{{user `windows10_edition`}}",
     "virtio_win_iso": "~/virtio-win.iso",
     "windows10_edition": "pro",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "cloud_token": "token"
   }
 }

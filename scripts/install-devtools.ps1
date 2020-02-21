@@ -113,6 +113,10 @@ Function Install-PowershellPackages {
     choco install -y --source $ChocolateyUrl --no-progress powershell-preview --packageparameters '"/CleanUpPath"'
     Update-SessionEnvironment
 
+    $path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+    $newPath = ($env:Path -replace "C:\\Program Files\\PowerShell\\7-preview\\preview", "C:\Program Files\PowerShell\7-preview")
+    [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
+
 }
 
 function Install-VsBuildTools {
@@ -162,7 +166,6 @@ Function UnInstall-VisualStudioLegacy {
     choco uninstall -y visualstudio2012premium
     Reboot-IfRequired
 }
-
 Function Install-Jetbrains {
     choco install -y --source $ChocolateyUrl --no-progress jetbrains-rider
     choco install -y --source $ChocolateyUrl --no-progress intellijidea-ultimate
@@ -194,17 +197,18 @@ Function Install-LightTools {
     choco install -y --source $ChocolateyUrl --no-progress unxUtils
     choco install -y --source $ChocolateyUrl --no-progress make
     choco install -y --source $ChocolateyUrl --no-progress nuget.commandline
-    choco install -y --source $ChocolateyUrl --no-progress vscode
+    # choco install -y --source $ChocolateyUrl --no-progress vscode
     Update-SessionEnvironment
     choco install -y --source $ChocolateyUrl --no-progress git --params "/GitOnlyOnPath  /NoGuiHereIntegration"
     Reboot-IfRequired
     Update-SessionEnvironment
-    choco install -y --source $ChocolateyUrl --no-progress firefox
-    choco install -y --source $ChocolateyUrl --no-progress procexp
-    choco install -y --source $ChocolateyUrl --no-progress procmon
+    # choco install -y --source $ChocolateyUrl --no-progress firefox
+    # choco install -y --source $ChocolateyUrl --no-progress procexp
+    # choco install -y --source $ChocolateyUrl --no-progress procmon
     Update-SessionEnvironment
-    choco install -y --source $ChocolateyUrl --no-progress starship
-    choco install -y --source $ChocolateyUrl --no-progress firacode
+    # choco install -y --source $ChocolateyUrl --no-progress cyberduck
+    # choco install -y --source $ChocolateyUrl --no-progress starship
+    # choco install -y --source $ChocolateyUrl --no-progress firacode
     choco install -y --source $ChocolateyUrl --no-progress choco-cleaner
     Update-SessionEnvironment
     Reboot-IfRequired
@@ -217,17 +221,9 @@ Function Install-LightTools {
 
     # choco install -y --source $ChocolateyUrl --no-progress microsoft-windows-terminal
 
-    Update-SessionEnvironment
-
-    $path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
-    $newPath = ($env:Path -replace "C:\\Program Files\\PowerShell\\7-preview\\preview", "C:\Program Files\PowerShell\7-preview")
-    [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
-
-    Update-SessionEnvironment
-
-    if ((Get-Content -Path $profile -Raw ) -notmatch 'starship') {
-        Add-Content -Path $profile -Value "`n`nInvoke-Expression (&starship init powershell)"
-    }
+    # if ((Get-Content -Path $profile -Raw ) -notmatch 'starship') {
+    #     Add-Content -Path $profile -Value "`n`nInvoke-Expression (&starship init powershell)"
+    # }
 
     Install-Python
     Reboot-IfRequired
@@ -240,25 +236,26 @@ Function Uninstall-LightTools {
     choco uninstall -y unxUtils
     choco uninstall -y make
     choco uninstall -y nuget.commandline
-    choco uninstall -y vscode
+    # choco uninstall -y vscode
     choco uninstall -y git
-    choco uninstall -y firefox
-    choco uninstall -y procexp
-    choco uninstall -y cyberduck
-    choco uninstall -y starship
-    choco uninstall -y firacode
+    # choco uninstall -y firefox
+    # choco uninstall -y procexp
+    # choco uninstall -y procmon
+    # choco uninstall -y cyberduck
+    # choco uninstall -y starship
+    # choco uninstall -y firacode
 
     $path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
     $newPath = ($env:Path -replace "C:\Program Files\PowerShell\7-preview", "")
     [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
 
-    $profileContent = (Get-Content -Path $profile -Raw )
-    if ( $profileContent -match '.*?starship.*') {
-        $match = $Matches.0 -replace "\(", '\('
-        $match = $match -replace "\)", '\)'
-        $profileContent -replace "$match", ""
-    }
-    $profileContent | Set-Content -Path $profile
+    # $profileContent = (Get-Content -Path $profile -Raw )
+    # if ( $profileContent -match '.*?starship.*') {
+    #     $match = $Matches.0 -replace "\(", '\('
+    #     $match = $match -replace "\)", '\)'
+    #     $profileContent -replace "$match", ""
+    # }
+    # $profileContent | Set-Content -Path $profile
 
     Update-SessionEnvironment
     Uninstall-Python
