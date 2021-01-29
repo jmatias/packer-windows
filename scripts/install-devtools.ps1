@@ -46,8 +46,6 @@ Function Main {
     }
 
 
-    Install-PowershellPackages
-    Reboot-IfRequired
 
     if (  $PSVersionTable.PSVersion -gt "6.0") {
         Import-WinModule PendingReboot
@@ -63,13 +61,13 @@ Function Main {
     if ( -not $Uninstall ) {
 
         if ($LightTools -or $All) { Install-LightTools }
-        if ($JetBrains -or $All) { Install-Jetbrains }
+#        if ($JetBrains -or $All) { Install-Jetbrains }
         if ($VisualStudio -or $All) { Install-VisualStudio }
         if ($VisualStudioLegacy -or $All) { Install-VisualStudioLegacy }
         if ($VsBuildTools -or $All) { Install-VsBuildTools }
         if ($SqlServer -or $All) { Install-SqlServer }
         if ($Virtualization -or $All) { Install-Virtualization }
-        if ($GitAliases -or $All) { Install-GitAliases }
+#        if ($GitAliases -or $All) { Install-GitAliases }
         if ($IIS -or $All) { Install-IIS }
 
     }
@@ -77,7 +75,7 @@ Function Main {
     if ( $Uninstall) {
 
         if ($LightTools -or $All) { Uninstall-LightTools }
-        if ($JetBrains -or $All) { Uninstall-Jetbrains }
+#        if ($JetBrains -or $All) { Uninstall-Jetbrains }
         if ($VisualStudio -or $All) { Uninstall-VisualStudio }
         if ($VisualStudioLegacy -or $All) { Uninstall-VisualStudioLegacy }
         if ($VsBuildTools -or $All) { Uninstall-VsBuildTools }
@@ -110,12 +108,9 @@ Function Install-PowershellPackages {
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force
     Update-SessionEnvironment
 
-    choco install -y --source $ChocolateyUrl --no-progress powershell-preview --packageparameters '"/CleanUpPath"'
+    choco install -y --source $ChocolateyUrl --no-progress powershell-core --packageparameters '"/CleanUpPath"'
     Update-SessionEnvironment
 
-    $path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
-    $newPath = ($env:Path -replace "C:\\Program Files\\PowerShell\\7-preview\\preview", "C:\Program Files\PowerShell\7-preview")
-    [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
 
 }
 
@@ -245,9 +240,6 @@ Function Uninstall-LightTools {
     # choco uninstall -y starship
     # choco uninstall -y firacode
 
-    $path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
-    $newPath = ($env:Path -replace "C:\Program Files\PowerShell\7-preview", "")
-    [System.Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
 
     # $profileContent = (Get-Content -Path $profile -Raw )
     # if ( $profileContent -match '.*?starship.*') {

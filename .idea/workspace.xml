@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0f36c5dd-8af4-4441-9c87-d5921ca49177" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/floppy/PinTo10.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/floppy/WindowsPowershell.lnk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/chocolatey.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/compact.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/compile-dotnet-assemblies.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/debloat/scripts/optimize-user-interface.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/debloat/scripts/optimize-user-interface.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/debloat/utils/boot-advanced-startup.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/debloat/utils/dark-theme.reg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/debloat/utils/disable-ShellExperienceHost.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/debloat/utils/disable-searchUI.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/dis-updates.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/disable-auto-logon.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/disable-tasks.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enable-rdp.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enable-remote-desktop.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enable-uac.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enable-winrm.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/hotfix-KB2552055.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/hotfix-KB2842230.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/install-devtools.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/install-devtools.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/installnet4.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/microsoft-updates.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/pin-powershell.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/set-winrm-automatic.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sysprep.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/uac-enable.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/vagrant-ssh.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/vm-guest-tools.bat" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="2" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1ezO9nBeruvtqOCNlPJCgMUa309" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../deepdrive" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0f36c5dd-8af4-4441-9c87-d5921ca49177" name="Default Changelist" comment="" />
+      <created>1595320805700</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1595320805700</updated>
+      <workItem from="1595320807723" duration="13000" />
+      <workItem from="1595325029016" duration="732000" />
+      <workItem from="1595339305940" duration="2262000" />
+      <workItem from="1595347497073" duration="98000" />
+      <workItem from="1596227851721" duration="11000" />
+      <workItem from="1597886214297" duration="53000" />
+      <workItem from="1599129463274" duration="21000" />
+      <workItem from="1599769899481" duration="11000" />
+      <workItem from="1600915589330" duration="18000" />
+      <workItem from="1608706985379" duration="29000" />
+      <workItem from="1608707029561" duration="93000" />
+      <workItem from="1608707146859" duration="238000" />
+      <workItem from="1608707429504" duration="75000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
