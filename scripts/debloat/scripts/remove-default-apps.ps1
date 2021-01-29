@@ -27,9 +27,9 @@ $apps = @(
     #"Microsoft.MicrosoftStickyNotes"
     "Microsoft.MinecraftUWP"
     "Microsoft.NetworkSpeedTest"
-    "Microsoft.Office.OneNote"
+#    "Microsoft.Office.OneNote"
     "Microsoft.People"
-    "Microsoft.Print3D"
+#    "Microsoft.Print3D"
     "Microsoft.SkypeApp"
     "Microsoft.Wallet"
     #"Microsoft.Windows.Photos"
@@ -46,7 +46,7 @@ $apps = @(
     "Microsoft.XboxGameOverlay"
     "Microsoft.XboxGamingOverlay"
     "Microsoft.XboxSpeechToTextOverlay"
-    "Microsoft.YourPhone"
+#    "Microsoft.YourPhone"
     "Microsoft.ZuneMusic"
     "Microsoft.ZuneVideo"
 
@@ -56,12 +56,12 @@ $apps = @(
     "Microsoft.GetHelp"
     "Microsoft.Getstarted"
     "Microsoft.Messaging"
-    "Microsoft.Office.Sway"
+#    "Microsoft.Office.Sway"
     "Microsoft.OneConnect"
-    "Microsoft.WindowsFeedbackHub"
+#    "Microsoft.WindowsFeedbackHub"
 
     # Creators Update apps
-    "Microsoft.Microsoft3DViewer"
+#    "Microsoft.Microsoft3DViewer"
     #"Microsoft.MSPaint"
 
     #Redstone apps
@@ -106,7 +106,7 @@ $apps = @(
     "Playtika.CaesarsSlotsFreeCasino"
     "ShazamEntertainmentLtd.Shazam"
     "SlingTVLLC.SlingTV"
-    "SpotifyAB.SpotifyMusic"
+#    "SpotifyAB.SpotifyMusic"
     #"TheNewYorkTimes.NYTCrossword"
     "ThumbmunkeysLtd.PhototasticCollage"
     "TuneIn.TuneInRadio"
@@ -163,8 +163,8 @@ foreach ($key in $cdm) {
     Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" $key 0
 }
 
-New-FolderForced -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" "AutoDownload" 2
+#New-FolderForced -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore"
+#Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" "AutoDownload" 2
 
 # Prevents "Suggested Applications" returning
 New-FolderForced -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
